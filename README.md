@@ -1,1 +1,4 @@
-This is a project to get a deeper understanding in different ML algorithms starting with a intuition on how to difference artists present in a museum.
+# Is this Picasso? An AI goes to the museum.
+
+This is a project focused on images to get a deeper understanding of different ML algorithms. The starting point of
+this project is an intuition on how to difference paintings present in a museum by the artists that painted them.
