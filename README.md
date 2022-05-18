@@ -8,9 +8,29 @@ AN AI GOES TO THE MUSEUM
 This is a project focused on images to get a deeper understanding of different ML algorithms. The starting point of
 this project is an intuition on how to difference paintings present in a museum by the artists that painted them.
 
-* WHY ART?
-* APPROACH: OBJECTIVES & LIMITATIONS
-* METHODOLOGY
+* WHY ART?  
+  If you have visited [my webpage][0] you already know that I have a background in architecture and construction and 
+  *Art history* was one of my favourites subjects. I also have interest in street art, industrial design or fashion. 
+  In last term, I wanted to explore the possibilities of working with images and ML.   
+
+ 
+* APPROACH, OBJECTIVES & LIMITATIONS  
+  My approach to this project was to find the rules that my mind follows to have an intuition on who painted a 
+  certain piece. I assume that this objective is pretty unreachable, but I am doing this for training purposes and 
+  to improve my ML expertise. If you flip a coin you have a 50% chance of getting the correct answer. If I can beat
+  the coin I would consider that a victory.  
+  
+  To have more chances to win, I decided to *build* my own small museum with 15 artists. Even though I chose artists 
+  with a noticeable style difference, many artists evolve their style for years until they develop their 
+  *uniqueness*. This maks the original objective even harder so I divided the artists in two groups: classic and 
+  vanguards.
+
+
+* METHODOLOGY  
+  The core of this project are several Jupyter notebooks where I cover all the process step by step: *building* the 
+  museum, training different ML algorithms and evaluating their performance.  
+  On the other hand, I created several scripts to handle data and process images. I also included all the references 
+  needed so you can repeat 
 
 ---
 
@@ -82,4 +102,5 @@ To do so, you can use the wikiart script in ./utils/wikiart. I left a copy of th
 With my setup (MacBook Pro, 2.3 GHz Quad-Core Intel Core i7 + 16 GB RAM and flash storage) it took me almost 3 
 hours to get about 5500 pictures.
 
+[0]: https://miguelangel.batalla.pro
 [1]: https://github.com/lucasdavid/wikiart

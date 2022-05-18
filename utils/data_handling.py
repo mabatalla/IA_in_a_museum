@@ -10,7 +10,7 @@ import os
 from mpl_toolkits.axes_grid1 import ImageGrid
 from pathlib import PurePath
 
-from utils.image_handling import resize_img
+from utils.image_processing import get_img_rgb, resize_img
 
 
 # FUNCTIONS
@@ -52,8 +52,7 @@ def get_collection(path, extensions=None):
     return collection
 
 
-# To show all images from a collection
-def show_collection(collection, cols=5):
+def show_collection(collection):
     """
     Show all images from a collection.
 
@@ -65,25 +64,18 @@ def show_collection(collection, cols=5):
         Columns in the figure shown.
 
     """
-    
     fig = plt.figure(figsize=(20, 20))
-
-    if len(collection) < 5:
-        grid_dims = (1, len(collection))
-
-    elif len(collection) > 5:
-        grid_dims = ((len(collection)//cols) + 1, 5)
 
     grid = ImageGrid(fig,
                      111,
-                     nrows_ncols=grid_dims,
+                     nrows_ncols=(1, len(collection)) if len(collection) <= 5 else ((len(collection)//cols) + 1, 5),
                      axes_pad=0.5)
 
     for ax, work in zip(grid, collection):
         img_name = str(work).split(sep='/')[-1].split(sep='.')[0]
         ax.set_title(img_name)
 
-        img = mpimg.imread(str(work))
+        img = get_img_rgb(str(work))
         img_res = resize_img(img, 50)
 
         ax.imshow(img_res)

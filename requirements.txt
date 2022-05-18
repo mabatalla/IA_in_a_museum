@@ -42,6 +42,7 @@ nbformat @ file:///opt/concourse/worker/volumes/live/e5e6b676-4ecd-4e4b-6788-218
 nest-asyncio @ file:///opt/concourse/worker/volumes/live/ddf592a1-304c-41a6-6d59-2d4687652b8f/volume/nest-asyncio_1649847942674/work
 notebook @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_f5a41ea2-97a0-4ff3-8669-7d94d31f65f7qv3p8st_/croots/recipe/notebook_1651734546956/work
 numpy==1.22.3
+opencv-python==4.5.5.64
 packaging @ file:///tmp/build/80754af9/packaging_1637314298585/work
 pandas==1.4.2
 pandocfilters @ file:///opt/conda/conda-bld/pandocfilters_1643405455980/work
