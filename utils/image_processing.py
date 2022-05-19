@@ -1,16 +1,16 @@
 """
-Contains the functions used to prepare raw images for ML algorithms
+Contains the functions used to process raw images for ML algorithms
 """
-
 # IMPORTS
-# from cv2 import COLOR_BGR2RGB, cvtColor, INTER_AREA, imread, resize TODO
 import cv2
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
 from collections import Counter
 from sklearn.cluster import KMeans
-from utils.data_handling import rgb_to_hex, plot_colors
+
+from utils.data_handling import plot_colors
+from utils.data_handling import rgb_to_hex
 
 
 # FUNCTIONS
@@ -55,9 +55,8 @@ def color_clustering(image, num_of_colors=10, show_chart=True):
     ordered_HEX_colors = [rgb_to_hex(i).upper() for i in ordered_RGB_colors]
 
     if show_chart:
-        plot_colors(ordered_HEX_colors, 'Colors found',)
-
-        # plt.show()
+        plot_colors(ordered_HEX_colors)
+        plt.show()
 
     return ordered_RGB_colors, ordered_HEX_colors
 
