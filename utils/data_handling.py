@@ -1,12 +1,11 @@
 """
 Contains the functions used to handle data and raw images
 """
-
 # IMPORTS
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
 import os
+import matplotlib.pyplot as plt
 
+from matplotlib.patches import Rectangle
 from mpl_toolkits.axes_grid1 import ImageGrid
 from pathlib import PurePath
 
@@ -34,7 +33,6 @@ def get_collection(path, extensions=None):
     collection: list
         Complete paths of the files with a valid extension.
     """
-
     # Empty list to append valid files path
     collection = []
 
@@ -52,6 +50,102 @@ def get_collection(path, extensions=None):
     return collection
 
 
+def plot_colors(HEX_indexes, title):
+    """
+
+    Parameters
+    ----------
+    HEX_indexes : list
+        Color names in HEX color mode
+    title
+    sort_colors
+    emptycols
+
+    Returns
+    -------
+
+    """
+    # Get HEX colors names without '#'
+    color_names = HEX_indexes
+
+    # Set cell dimensions
+    cell_width = 250
+    cell_height = 50
+    filling_width = 200
+    margin = 25
+    top_margin = 200
+
+    # Set number of rows
+    num_of_colors = len(color_names)
+    nrows = num_of_colors
+
+    # Set figure dimensions
+    width = cell_width + 2 * margin
+    height = cell_height * nrows + margin + top_margin
+    dpi = 72
+
+    # Generate figure and axes
+    fig, ax = plt.subplots(figsize=(width / dpi, height / dpi), dpi=dpi)
+    fig.subplots_adjust(.1, .1, (width - margin) / width, (height - top_margin) / height)
+
+    ax.set_xlim(0, cell_width * 4)
+    ax.set_ylim(cell_height * nrows,
+                -cell_height / 2)
+
+    ax.yaxis.set_visible(False)
+    ax.xaxis.set_visible(False)
+
+    ax.set_axis_off()
+
+    ax.set_title(title,
+                 fontsize=24,
+                 loc="left",
+                 pad=10)
+
+    for i, color in enumerate(color_names):
+        row = i
+        col = 1
+        y = row * cell_height
+
+        filling_start_x = cell_width * col
+        text_pos_x = cell_width * col + filling_width + 7
+
+        ax.text(text_pos_x,
+                y + (cell_height / 4),
+                color,
+                fontsize=14,
+                horizontalalignment='left',
+                verticalalignment='center')
+
+        ax.add_patch(Rectangle(xy=(filling_start_x, y - 9),
+                               width=filling_width,
+                               height=40,
+                               facecolor=color,
+                               edgecolor='0.5'))
+
+    return fig
+
+
+def rgb_to_hex(color):
+    """
+    Transform an RGB color into HEX
+
+    Parameters
+    ----------
+    color : numpy.ndarray
+        RGB color reference
+
+    Returns
+    -------
+    HEX_color : str
+        HEX color reference
+
+    """
+    HEX_color = f'#{int(color[0]):02x}{int(color[1]):02x}{int(color[2]):02x}'
+
+    return HEX_color
+
+
 def show_collection(collection):
     """
     Show all images from a collection.
@@ -60,15 +154,13 @@ def show_collection(collection):
     ----------
     collection: list
         Paths of the files to be shown.
-    cols : int
-        Columns in the figure shown.
-
     """
     fig = plt.figure(figsize=(20, 20))
 
     grid = ImageGrid(fig,
                      111,
-                     nrows_ncols=(1, len(collection)) if len(collection) <= 5 else ((len(collection)//cols) + 1, 5),
+                     nrows_ncols=(1, len(collection)) if len(collection) <= 5
+                     else ((len(collection) // 5) + 1, 5),
                      axes_pad=0.5)
 
     for ax, work in zip(grid, collection):
