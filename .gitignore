@@ -164,5 +164,4 @@ cython_debug/
 .idea/
 .vscode**
 .vscode/
-images/
-preliminar/
+data/raw_images/
