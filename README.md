@@ -22,15 +22,16 @@ this project is an intuition on how to difference paintings present in a museum 
   
   To have more chances to win, I decided to *build* my own small museum with 15 artists. Even though I chose artists 
   with a noticeable style difference, many artists evolve their style for years until they develop their 
-  *uniqueness*. This maks the original objective even harder so I divided the artists in two groups: classic and 
-  vanguards.
+  *uniqueness*. This makes the original objective even harder so I divided the artists in two groups: classic and 
+  vanguards. This new division allows me to work with simpler ML algorithms as the target is now binary. 
 
 
 * METHODOLOGY  
-  The core of this project are several Jupyter notebooks where I cover all the process step by step: *building* the 
-  museum, training different ML algorithms and evaluating their performance.  
+  The core of this project are several Jupyter notebooks where I cover all the process step by step: *building the 
+  museum*, training different ML algorithms and evaluating their performance.  
   On the other hand, I created several scripts to handle data and process images. I also included all the references 
-  needed so you can repeat 
+  needed so you can use other images. In case you want to use the exact files that I used send me a message to give 
+  you access to the folder (almost 3Gb).
 
 ---
 

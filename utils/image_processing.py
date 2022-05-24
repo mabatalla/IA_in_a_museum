@@ -12,7 +12,7 @@ from sklearn.cluster import KMeans
 
 
 # FUNCTIONS
-def color_clustering(image, color_mode='HEX', num_of_colors=10, show_chart=True):
+def color_clustering(image, color_mode='HEX', bins=5, num_of_colors=10, show_chart=True):
     """
     Extract a number of colors from an image.
 
@@ -25,6 +25,8 @@ def color_clustering(image, color_mode='HEX', num_of_colors=10, show_chart=True)
         Image to extract color from
     color_mode : str
         Color mode to return colors (RGB, HEX)
+    bins : int
+        Number of possible values for each RGB channel
     num_of_colors : int
         Number of clusters
     show_chart : bool
@@ -44,7 +46,10 @@ def color_clustering(image, color_mode='HEX', num_of_colors=10, show_chart=True)
     color_clusters = model_kmeans.cluster_centers_  # This are the RGB values of the centroids
 
     # Transform color clusters to a discrete variable and its type to list
-    color_clusters = color_clusters.round().tolist()
+    color_clusters = np.array(color_clusters)  # Needed for reduce_col_palette
+    color_clusters = reduce_col_palette(np.array(color_clusters), bins=bins)
+    color_clusters = color_clusters.tolist()
+    # color_clusters = color_clusters.round().tolist()
 
     # Count and sort the pixels in each cluster to order colors by most common
     color_counts = Counter(labels)  # Get color as keys and counts as values
@@ -64,7 +69,7 @@ def color_clustering(image, color_mode='HEX', num_of_colors=10, show_chart=True)
     else:
         colors = ordered_HEX_colors
 
-    return colors
+    return color_clusters
 
 
 def get_img_rgb(image_path):
