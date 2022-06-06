@@ -165,4 +165,5 @@ cython_debug/
 .vscode**
 .vscode/
 data/raw_images/*
-!data/raw_images/sample_img
+!*data/raw_images/sample_img/*
+
