@@ -93,6 +93,7 @@ def get_color_features(image):
 
 def process_collection(collection,
                        resize_height=150,
+                       square=False,
                        color_mode='HEX',
                        label='new_label',
                        save=False,
@@ -109,6 +110,8 @@ def process_collection(collection,
         List with paths to images
     resize_height : int
         Desired height in pixels
+    square : bool,
+        Whether to transform images into squares
     color_mode:
         Whether to use RGB or HEX color mode
     label : str
@@ -170,13 +173,15 @@ def process_collection(collection,
         try:
             # Get image RGB and resize
             img = get_img_rgb(img_path)
-            img = resize_img(img, resize_height)
+            if square:
+                img = square_img(img, resize_height)
+            else:
+                img = resize_img(img, resize_height)
 
             # Get ratio
             dim_ratio = round(img.shape[0]/img.shape[1], ndigits=5)
 
-            # Resize to reduce_col_palette and color_clustering
-            img = square_img(img, 150)
+            # Reduce palette of colors
             img = reduce_col_palette(img, 5)
 
             # Get color features

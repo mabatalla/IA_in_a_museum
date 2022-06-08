@@ -1,18 +1,18 @@
 """
 Contains the functions used to process raw images for ML algorithms
 """
+from collections import Counter
+
 # IMPORTS
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
-
-from collections import Counter
 from matplotlib.patches import Rectangle
 from sklearn.cluster import KMeans
 
 
 # FUNCTIONS
-def color_clustering(image, color_mode='HEX', bins=5, num_of_colors=10, show_chart=True):
+def color_clustering(image, color_mode='HEX', max_values=5, num_of_colors=10, show_chart=True):
     """
     Extract a number of colors from an image.
 
@@ -25,7 +25,7 @@ def color_clustering(image, color_mode='HEX', bins=5, num_of_colors=10, show_cha
         Image to extract color from
     color_mode : str
         Color mode to return colors (RGB, HEX)
-    bins : int
+    max_values : int
         Number of possible values for each RGB channel
     num_of_colors : int
         Number of clusters
@@ -47,9 +47,8 @@ def color_clustering(image, color_mode='HEX', bins=5, num_of_colors=10, show_cha
 
     # Transform color clusters to a discrete variable and its type to list
     color_clusters = np.array(color_clusters)  # Needed for reduce_col_palette
-    color_clusters = reduce_col_palette(np.array(color_clusters), bins=bins)
+    color_clusters = reduce_col_palette(np.array(color_clusters), max_values=max_values)
     color_clusters = color_clusters.tolist()
-    # color_clusters = color_clusters.round().tolist()
 
     # Count and sort the pixels in each cluster to order colors by most common
     color_counts = Counter(labels)  # Get color as keys and counts as values
@@ -94,7 +93,7 @@ def get_img_rgb(image_path):
     return img
 
 
-def map_channel(channel_value, bins):
+def map_channel(channel_value, max_values):
     """
     Map an RGB channel value (0 to 255) to a limited options.
 
@@ -105,7 +104,7 @@ def map_channel(channel_value, bins):
     ----------
     channel_value : int
         Value of one channel
-    bins : int
+    max_values : int
         Number of posible values
 
     Returns
@@ -127,16 +126,16 @@ def map_channel(channel_value, bins):
     ... map_channel(B_px, 3)
     127
     """
-    if channel_value >= 255:
-        mapped_value = 255
-    else:
-        preprocessed_value = np.floor((channel_value*bins)/255)
-        mapped_value = abs(int(preprocessed_value*(255/(bins - 1))))
+    step = (255/(max_values - 1))
+    values = list(np.fix(np.arange(0, 256, step)))
+
+    distances = [abs(channel_value - i) for i in values]
+    mapped_value = values[distances.index(min(distances))]
 
     return mapped_value
 
 
-def reduce_col_palette(image, bins, info=False):
+def reduce_col_palette(image, max_values, info=False):
     """
     Map all pixels of an image to a reduced palette.
 
@@ -147,13 +146,13 @@ def reduce_col_palette(image, bins, info=False):
     This results in 256x256x256 colors, this is more than 16M.
 
     This function reduces the possibilities of every channel to the number
-    passed as bins.
+    passed as max_values.
 
     Parameters
     ----------
     image : numpy.ndarray
         Image to reduce color palette
-    bins : int
+    max_values : int
         Number of possible values for each RGB channel
     info : bool
         Whether to inform the user the result
@@ -168,17 +167,14 @@ def reduce_col_palette(image, bins, info=False):
 
     # Iterate the array to transform the value of each channel in the pixels
     for i, channel_val in enumerate(img):
-        if channel_val == 255:
-            img[i] = 255
-        else:
-            img[i] = map_channel(channel_val, bins)
+        img[i] = map_channel(channel_val, max_values)
 
     # Restore image shape
     img = np.reshape(img, image.shape)
 
     # Inform user
     if info:
-        print(f'Palette reduced to {bins ** 3} colors.')
+        print(f'Palette reduced to {max_values ** 3} colors.')
 
     return img
 
@@ -274,17 +270,17 @@ def plot_colors(HEX_indexes):
     nrows = num_of_colors
 
     # Set figure dimensions
-    width = cell_width + 2 * margin
-    height = cell_height * nrows
+    width = cell_width + 2*margin
+    height = cell_height*nrows
     dpi = 72
 
     # Generate figure and axes
-    fig, ax = plt.subplots(figsize=(width / dpi, height / dpi),
+    fig, ax = plt.subplots(figsize=(width/dpi, height/dpi),
                            dpi=dpi)
 
-    ax.set_xlim(0, cell_width * 4)
-    ax.set_ylim(cell_height * nrows,
-                -cell_height / 2)
+    ax.set_xlim(0, cell_width*4)
+    ax.set_ylim(cell_height*nrows,
+                -cell_height/2)
 
     ax.yaxis.set_visible(False)
     ax.xaxis.set_visible(False)
@@ -299,13 +295,13 @@ def plot_colors(HEX_indexes):
     for i, color in enumerate(color_names):
         row = i
         # col = 1
-        y = row * cell_height
+        y = row*cell_height
 
         filling_start_x = 5
         text_pos_x = filling_start_x + filling_width + 50
 
         ax.text(text_pos_x,
-                y + (cell_height / 4),
+                y + (cell_height/4),
                 color,
                 fontsize=14,
                 horizontalalignment='left',
@@ -318,7 +314,6 @@ def plot_colors(HEX_indexes):
                                edgecolor='0'))
 
     return fig
-
 
 # VARIABLES
 
